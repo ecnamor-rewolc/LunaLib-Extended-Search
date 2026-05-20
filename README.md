@@ -1,3 +1,13 @@
+<details>
+<summary><strong>Status &amp; disclaimer — read before installing</strong></summary>
+
+- **Not a final release.** This is a working personal patch I'm publishing so other people can use it. There's no roadmap and no planned next version.
+- **Tested only on Starsector ``0.98a-RC8``.** It may work on older or newer versions, but I haven't verified.
+- **Search has occasional misses.** Most queries do the right thing, but the filter or highlight sometimes drops a result I'd expect it to land on. Exact repro is unclear; nothing breaks the game when it happens — the search just returns fewer matches than it should.
+- **Anyone is welcome to fork, modify, or republish this.** I am not maintaining it — please don't expect support, bug fixes, or future versions. The patch inherits LunaLib's [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license, which formally permits derivatives as long as you credit Lukas04 and note that the work was modified.
+
+</details>
+
 ## Credits
 
 **Original mod:** [LunaLib](https://github.com/Lukas22041/LunaLib) by
