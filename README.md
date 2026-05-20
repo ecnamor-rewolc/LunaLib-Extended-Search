@@ -1,12 +1,21 @@
-## Attribution
+## Credits
 
-This is a patch on top of [LunaLib](https://github.com/Lukas22041/LunaLib)
-2.0.5 by **Lukas04**, licensed under
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The original
-work is unchanged outside the six files listed below; this patch is
-distributed under the same license.
+**Original mod:** [LunaLib](https://github.com/Lukas22041/LunaLib) by
+[**Lukas04**](https://github.com/Lukas22041) — all the heavy lifting
+(the in-game mod settings menu itself, the rendering, the persistence,
+the framework everything plugs into) is his work. This repository is
+just a small patch on top of it.
 
-Patch author: **ecnamor.**
+| | |
+| --- | --- |
+| Original mod | [LunaLib](https://github.com/Lukas22041/LunaLib) |
+| Original mod author | [Lukas04 on GitHub](https://github.com/Lukas22041) |
+| Original mod forum thread | [fractalsoftworks.com](https://fractalsoftworks.com/forum/index.php?topic=25658.0) |
+| Patch author | **ecnamor** |
+| License | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (inherited from LunaLib) |
+
+The original work is unchanged outside the six files listed below; this
+patch is distributed under the same license.
 
 A fork of LunaLib 2.0.5 that extends the mod settings menu's search box from
 "matches mod name/id only" to "matches every searchable field of every setting,"
