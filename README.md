@@ -84,6 +84,30 @@ Requirements: the `.gif` must be readable at runtime from the mod's own folder. 
 
 ---
 
+## Building from source
+
+Requirements: **Gradle 8+**, **JDK 8+** (or JDK 17/21/26 — Kotlin targets 1.8 bytecode), a local **Starsector** install, and **LazyLib** in your mods folder.
+
+```
+# 1. Clone
+git clone https://github.com/ecnamor-rewolc/LunaLib-Extended-Search.git
+cd LunaLib-Extended-Search/LunaLib-Search-2.0.5
+
+# 2. Set your Starsector path
+cp gradle.properties.example gradle.properties
+# edit gradle.properties — set starsectorDir to your install path
+
+# 3. Build
+gradle jar
+# output: jars/LunaLib.jar
+```
+
+`build.ps1` in the repo root also builds and hot-deploys to the game mods folder (Windows/PowerShell, edit the paths at the top to match your setup).
+
+The compiled `LunaLib.jar` is not committed — it is a build artifact. Download a pre-built release from the [Releases](https://github.com/ecnamor-rewolc/LunaLib-Extended-Search/releases) page if you just want to play.
+
+---
+
 ## License
 
 CC BY 4.0 — same as the original LunaLib. See [creativecommons.org/licenses/by/4.0/](https://creativecommons.org/licenses/by/4.0/).

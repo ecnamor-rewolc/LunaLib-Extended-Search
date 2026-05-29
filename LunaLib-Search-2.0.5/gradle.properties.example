@@ -1,0 +1,3 @@
+# Copy this file to gradle.properties and set your Starsector install path.
+# gradle.properties is git-ignored so your local path never gets committed.
+starsectorDir=C:/Program Files (x86)/Fractal Softworks/Starsector

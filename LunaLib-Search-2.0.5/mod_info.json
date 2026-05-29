@@ -1,0 +1,21 @@
+{
+  "id": "lunalib",
+  "name": "LunaLib",
+  "author": "Lukas04",
+  "utility": "false",
+  "version": "2.0.5",
+  "description": "LunaLib with extended search (matches setting names/descriptions/tabs), animated GIF mod icons, text-field QoL fixes, and resilient config loading. Drop-in replacement — same modID.",
+  "gameVersion": "0.98a-RC5",
+  "jars": [
+    "jars/LunaLib.jar",
+    #"jars/LunaLib-Kotlin.jar",
+    "jars/libs/fuzzywuzzy-1.3.0.jar"
+  ],
+  "modPlugin": "lunalib.LunaLibPlugin",
+  "dependencies": [
+    {
+      "id": "lw_lazylib",
+      "name": "LazyLib"
+    }
+  ]
+}
