@@ -4,7 +4,7 @@
   "author": "Lukas04",
   "utility": "false",
   "version": "2.0.5",
-  "description": "LunaLib with extended search (matches setting names/descriptions/tabs), animated GIF mod icons, text-field QoL fixes, and resilient config loading. Drop-in replacement — same modID.",
+  "description": "LunaLib with extended search, animated GIF mod icons, text-field QoL fixes, and resilient config loading. Same folder name and modID as the original — overwrites it directly.",
   "gameVersion": "0.98a-RC5",
   "jars": [
     "jars/LunaLib.jar",

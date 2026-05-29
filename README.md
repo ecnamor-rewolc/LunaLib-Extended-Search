@@ -13,7 +13,7 @@ A fork of [LunaLib 2.0.5](https://github.com/Lukas22041/LunaLib) (Lukas04, CC BY
 - **Extended Search** — the settings panel search box now matches every searchable field of every setting, not just the mod name.
 - **Animated GIF Icons** — mod authors can use animated `.gif` files as their mod's icon in the settings panel.
 
-Same modID (`lunalib`), same folder name — drop-in replacement.
+Same modID (`lunalib`) and same folder name (`LunaLib`) as the original — just extract the zip into your mods folder to overwrite it directly.
 
 ---
 
@@ -70,9 +70,8 @@ Same modID (`lunalib`), same folder name — drop-in replacement.
 
 ## Installation
 
-1. **Remove** the original `LunaLib` folder from your mods directory (same modID — they conflict).
-2. **Drop** the `LunaLib-Search-2.0.5` folder into `Starsector/mods/`.
-3. Enable in the launcher.
+1. Extract `LunaLib-Extended-Search-1.1.0.zip` into `Starsector/mods/` — it unpacks as `LunaLib/` and overwrites the original directly.
+2. Enable in the launcher (already enabled if the original was).
 
 ---
 

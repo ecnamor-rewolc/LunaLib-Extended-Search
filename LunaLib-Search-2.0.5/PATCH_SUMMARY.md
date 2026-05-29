@@ -43,9 +43,11 @@ quality-of-life fixes for the search text field (Caps Lock / Delete / repeat
 rate), readable main-menu button labels, and a small reliability fix for
 corrupt per-mod config JSONs.
 
-Built and tested against Starsector 0.98a-RC8 on Windows. ModID is unchanged
-(`lunalib`), so this is a drop-in replacement — other mods that declare a
-dependency on `lunalib` continue to work.
+Built and tested against Starsector 0.98a-RC8 on Windows. ModID and folder name
+are both identical to the original (`lunalib` / `LunaLib`) — extract the zip
+into your mods folder to overwrite the original directly. Other mods that
+declare a dependency on `lunalib` or reference the `LunaLib` folder continue
+to work without changes.
 
 ## Behavior
 
@@ -214,7 +216,4 @@ Files relevant to upstream — the rest of the mod folder is untouched.
   (color picker, keybind, radio, etc.) were not touched.
 - No new dependencies. `fuzzywuzzy` is still on the classpath; it is no
   longer used by the search path but the import is preserved.
-- ModID stays `lunalib`. The forked folder ships with mod_info.json
-  renaming to "LunaLib (Search Fork)" purely so the launcher list shows
-  which one is enabled — that's a local cosmetic change, not a part of
-  the patch intended for upstream.
+- ModID and folder name are both identical to the original (`lunalib` / `LunaLib`).
