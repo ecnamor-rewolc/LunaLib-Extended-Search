@@ -102,8 +102,6 @@ gradle jar
 # output: jars/LunaLib.jar
 ```
 
-`build.ps1` in the repo root also builds and hot-deploys to the game mods folder (Windows/PowerShell, edit the paths at the top to match your setup).
-
 The compiled `LunaLib.jar` is not committed — it is a build artifact. Download a pre-built release from the [Releases](https://github.com/ecnamor-rewolc/LunaLib-Extended-Search/releases) page if you just want to play.
 
 ---
