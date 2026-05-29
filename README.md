@@ -1,208 +1,94 @@
-> [!WARNING]
-> ### STATUS & DISCLAIMER — READ BEFORE INSTALLING
->
-> - **NOT A FINAL RELEASE.** This is a working personal patch I'm publishing so other people can use it. There's no roadmap and no planned next version.
-> - **TESTED ONLY ON STARSECTOR `0.98a-RC8`.** It may work on older or newer versions, but I haven't verified.
-> - **SEARCH HAS OCCASIONAL MISSES.** Most queries do the right thing, but the filter or highlight sometimes drops a result I'd expect it to land on. Exact repro is unclear; nothing breaks the game when it happens — the search just returns fewer matches than it should.
-> - **ANYONE IS WELCOME TO FORK, MODIFY, OR REPUBLISH.** I am not maintaining it — please don't expect support, bug fixes, or future versions. The patch inherits LunaLib's [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license, which formally permits derivatives as long as you credit Lukas04 and note that the work was modified.
+# LunaLib — Extended Search + Animated Icons
 
-## Credits
+A fork of [LunaLib 2.0.5](https://github.com/Lukas22041/LunaLib) (Lukas04, CC BY 4.0) with two sets of additions:
 
-**Original mod:** [LunaLib](https://github.com/Lukas22041/LunaLib) by
-[**Lukas04**](https://github.com/Lukas22041) — all the heavy lifting
-(the in-game mod settings menu itself, the rendering, the persistence,
-the framework everything plugs into) is his work. This repository is
-just a small patch on top of it.
+- **Extended Search** — the settings panel search box now matches every searchable field of every setting, not just the mod name.
+- **Animated GIF Icons** — mod authors can use animated `.gif` files as their mod's icon in the settings panel.
 
-| | |
-| --- | --- |
-| Original mod | [LunaLib](https://github.com/Lukas22041/LunaLib) |
-| Original mod author | [Lukas04 on GitHub](https://github.com/Lukas22041) |
-| Original mod forum thread | [fractalsoftworks.com](https://fractalsoftworks.com/forum/index.php?topic=25658.0) |
-| Patch author | **ecnamor** |
-| License | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) (inherited from LunaLib) |
+Same modID (`lunalib`), same folder name — drop-in replacement.
 
-The original work is unchanged outside the six files listed below; this
-patch is distributed under the same license.
+---
 
-A fork of LunaLib 2.0.5 that extends the mod settings menu's search box from
-"matches mod name/id only" to "matches every searchable field of every setting,"
-plus a strict-search toggle, visual feedback (highlight + tab gray-out),
-quality-of-life fixes for the search text field (Caps Lock / Delete / repeat
-rate), readable main-menu button labels, and a small reliability fix for
-corrupt per-mod config JSONs.
+## What's new in 1.1.0
 
-Built and tested against Starsector 0.98a-RC8 on Windows. ModID is unchanged
-(`lunalib`), so this is a drop-in replacement — other mods that declare a
-dependency on `lunalib` continue to work.
+**Animated GIF icons** for the settings panel mod list:
 
-## Behavior
+- Place a `.gif` in your mod folder and set `"iconPath"` in `LunaSettingsConfig.json`.
+- If a static icon path is set but a `.gif` with the same base name exists, LunaLib automatically prefers the animated version.
+- Frames decoded once on panel open, cached as GPU textures, freed on panel close.
+- Icons constrained to 40×40 px to match the standard card layout.
+- No extra dependencies — pure Java 8, no native code.
 
-**Search filter (mod carousel)**
-- The search input now matches against, for every mod:
-  - The mod's `name` (and `id`, in default mode only — see "Exact only" below)
-  - Plus `fieldName`, `fieldDescription`, `tab` and (default mode) `fieldID`
-    of every setting the mod registered through `LunaSettings.csv`.
-- Whitespace-separated words use AND semantics across the mod's fields:
-  typing `nexerelin credits` keeps a mod where one setting mentions Nexerelin
-  and another contains a "Credits" block, even though no single field has
-  both words. Each word still has to land somewhere in the mod's data.
-- Each word matches as a **prefix of a whitespace-bounded token**, not an
-  arbitrary substring. So `id` matches `ID` / `Identifier` but skips
-  `hidden`, `raid`, `mid-save`, `individual`, etc. This keeps short queries
-  from blowing up the result set.
-- The carousel scroll position resets to the top on every keystroke so the
-  filtered list never appears empty just because the scroller was parked
-  below the new bottom.
+---
 
-**"Exact only" toggle (under the search field)**
-- Off by default — the matching rules above (case-insensitive prefix) apply.
-- On — each search word must equal a whole whitespace-bounded token,
-  **case-sensitively**. Typing `Nexerelin` hits the mod "Nexerelin" only;
-  `nexerelin` lowercase no longer matches because the displayed name has a
-  capital N. Useful for short identifiers that would otherwise pull in noise
-  even with the prefix rule (e.g. searching for an exact-cased CSV id).
-- In exact mode the haystack also drops internal IDs (`mod.id`, `fieldID`).
-  These aren't visible to the user, and including them would let a
-  lowercase mod-id like `"nexerelin"` sneak through case-sensitive search
-  against the displayed `"Nexerelin"`. Default-mode keeps IDs in the
-  haystack so power users can still grep by them.
-- Resets to off every time the panel is reopened — there is no persisted
-  state for it. Toggle's text colour (gray when off, search-green when on)
-  is the only state indicator; the LunaUIButton "regularButton" auto-text
-  was bypassed so the label stays "Exact only" instead of flipping to
-  True/False.
+## Extended Search (1.0.0)
 
-**Tabs (right-hand panel)**
-- Tabs that contain at least one matching setting render normally.
-- Tabs whose settings contain none of the search words have their label
-  drawn in `Misc.getGrayColor()` — the tab is still clickable, just visually
-  dimmed. This avoids hiding/rearranging tabs (which would be disorienting)
-  while still showing the user where the matches live.
-- Tab labels that themselves contain a search prefix get the match
-  highlighted in the search color.
-- Word semantics differ on purpose between the two surfaces:
-  - **Carousel filter** is `AND` across the search words — the mod must
-    contain every word somewhere in its data, but the words may live in
-    different tabs / settings / fields. This is what makes
-    `nexerelin credits` correctly surface a mod that mentions Nexerelin in
-    one setting and Credits in another.
-  - **Tab gray-out** is `OR` across the search words — a tab stays active
-    if it contains any one of the words. If the gray-out were also `AND`,
-    a tab that hosts only part of a multi-word query (say only `disable`
-    out of `force disable`) would render gray even though the user can
-    plainly see green matches in it. `OR` keeps the gray-out aligned with
-    "is there anything green to look at here."
+### Search behavior
 
-**Highlight color**
-- Search matches render in `Misc.getPositiveHighlightColor()` (the standard
-  "positive number" green), distinct from `Misc.getHighlightColor()` (yellow).
-  This is deliberate: a lot of mod authors use yellow `[brackets]` in their
-  setting descriptions, and using the same color for search matches would be
-  ambiguous. With two colors, yellow always means "author-highlighted" and
-  green always means "this is what your search just matched."
-- Highlighting is applied to: the mod's name in the carousel, the tab label,
-  section headers inside a tab (Header-type entries), the setting's
-  `fieldName`, and the setting's `fieldDescription` / `defaultValue`
-  (for Text-type entries).
+- Matches against the mod's **name**, **id** (default mode only), and every setting's **fieldName**, **fieldDescription**, **tab**, and **fieldID** (default mode only).
+- Multiple words use **AND semantics** — each word must match somewhere in the mod's data, but words can be in different settings or tabs.
+- Matching is **prefix of a whitespace-bounded token** (case-insensitive by default). `id` matches `ID` and `Identifier` but not `hidden` or `raid`.
+- Scroll position resets to the top on every keystroke.
 
-**Bracket/search overlap rule**
-- `LabelAPI.setHighlight` matches whole whitespace-bounded tokens with a
-  forward-only cursor, so the implementation has to be careful with two
-  separate highlight sources sharing one paragraph.
-- When a search match overlaps with a bracket-extracted highlight (one
-  string is contained in the other, case-insensitive), the bracket is
-  dropped and only the search highlight is emitted. The search color wins
-  over the author's yellow at the point the user is searching for, which is
-  the visually correct outcome.
-- All highlights (kept brackets + search matches) are sorted by their first
-  whole-token position in the text before being passed to `setHighlight` /
-  `setHighlightColors`, because the cursor only moves forward. Without
-  sorting, later-in-text highlights would silently fail to render.
+### Exact-only toggle
 
-**Tooltip**
-- `searchFieldTooltip` rewritten to one short paragraph describing the new
-  behavior, with `prefix` / `highlighted` / `grayed out` as in-line
-  highlights.
-- `searchFieldName` shortened from `"Search Mod"` to `"Search"`.
+- Located below the search field. Off by default.
+- When on: each word must equal a whole token, **case-sensitively**. IDs are excluded from the haystack to prevent case-mismatch leakage.
+- Resets to off every time the panel reopens.
 
-## Text field QoL (LunaUITextField)
+### Tab highlights
 
-The search box surfaced a few longstanding text-field annoyances that bit
-during testing. Fixes:
+- Tabs with at least one matching setting render normally.
+- Tabs with no matches have their label drawn in gray (still clickable).
+- Tab labels that contain a search prefix are highlighted in green.
 
-- **Caps Lock / function keys no longer inject junk.** Hitting Caps Lock,
-  Scroll Lock, Print Screen, Pause, the Menu key, F1-F12, Num Lock, Insert,
-  Home, End, PgUp/PgDn, arrows, etc. used to append the key's control-code
-  `eventChar` to the text. Now the loop drops any event whose `eventChar`
-  sits in ASCII 0-31 or equals 127 — a universal printable-character gate
-  instead of an ever-growing per-key skip list.
-- **Delete acts as Backspace.** The field has no caret, so "remove a
-  character" is the only deletion mental model. `Keyboard.KEY_DELETE` is now
-  bound to the same handler as `Keyboard.KEY_BACK`.
-- **Framerate-independent delete cooldown.** The old per-frame cooldown of
-  8 frames was ~44 ms at 180 FPS — short enough that a single physical tap
-  often deleted two characters. Replaced with a 150 ms wall-clock minimum
-  gap tracked via `System.currentTimeMillis()`. One tap is always one
-  character; a hold settles into ~7 chars/second after the OS keyboard
-  repeat delay kicks in.
+### Text field QoL
 
-## Main-menu button polish (CombatHandler)
+- Caps Lock, function keys, navigation keys no longer inject junk characters.
+- Delete key acts as Backspace (field has no caret).
+- Delete repeat cooldown is 150 ms wall-clock instead of 8 frames — one tap = one character regardless of framerate.
 
-The "Mod Settings" / "Version Checker" buttons drawn over the title screen
-were rendering with `Fonts.DEFAULT_SMALL` at 15 px, which looked blurry and
-squished. Swapped to `Fonts.ORBITRON_20AABOLD` rendered at 14 px — same
-family Starsector uses elsewhere for UI labels, reads as bold/crisp at
-button size. The "(N Updates)" overlay is now rendered as a separate
-`DrawableString` (also Orbitron, 14 px) and centered horizontally under the
-main label; the old `appendIndented` approach left-aligned it within the
-two-line block.
+### Main-menu button polish
 
-The existing in-panel buttons (Save All, Reset Mod To Default, About,
-Search-field placeholder) used `position.height - computeTextHeight/2` for
-the Y offset, which put the label near the bottom of the button instead of
-the middle. Fixed to `height/2 - computeTextHeight/2` against the button's
-own width/height — all five top-row buttons now visually align.
+- "Mod Settings" / "Version Checker" labels switched from DEFAULT_SMALL to ORBITRON_20AABOLD at 14 px.
+- "(N Updates)" text rendered as a separate centered DrawableString.
+- All in-panel button labels vertically centered.
 
-## Reliability fix (small, separate)
+### Reliability fix
 
-`LunaSettingsLoader.loadConfigSafe(modId)` wraps `JSONUtils.loadCommonJSON`
-calls used during settings load and on-disk default sync. If a per-mod JSON
-under `Starsector/saves/common/LunaSettings/<modID>.json` is unreadable
-(e.g. a partial write after a crash, or a stale incompatible file left
-behind by a removed mod), the file is renamed to
-`<modID>.json.corrupt-<timestamp>` and a fresh default is written instead
-of bubbling the exception up to `LunaLibPlugin.onApplicationLoad`. Two
-call sites in `saveDefaultsToFile` and `loadSettings` were updated to use
-the wrapper.
+- Corrupt per-mod config JSONs under `saves/common/LunaSettings/` are renamed to `<modID>.json.corrupt-<timestamp>` and replaced with defaults instead of crashing on load.
 
-## Changed files
+---
 
-Files relevant to upstream — the rest of the mod folder is untouched.
+## Installation
 
-| Path | Change |
-| --- | --- |
-| `data/strings/strings.json` | `searchFieldName`, `searchFieldTooltip` rewritten |
-| `src/lunalib/backend/ui/settings/LunaSettingsUIModsPanel.kt` | search filter (AND across words, prefix-match, Exact-only toggle with case-sensitive whole-token equality), companion helpers `extractMatches` / `findFirstTokenPosition` / `anyTokenMatches` / `anyTokenHasPrefix` / `getSearchHighlightColor`, `rawSearch` + `currentSearch` + `exactMatchOnly` companion mirrors reset in `init`, mod-name highlight, scroll reset on keystroke, button-text centering fix |
-| `src/lunalib/backend/ui/settings/LunaSettingsUISettingsPanel.kt` | tab gray-out (OR across words) + tab-name highlight, fieldName highlight, Header-type highlight, fieldDescription / Text-type highlight + bracket overlap handling + position-sorted setHighlight, `advance()` re-renders on search-text change |
-| `src/lunalib/backend/ui/settings/LunaSettingsLoader.kt` | `loadConfigSafe` wrapper around `JSONUtils.loadCommonJSON`, used by `saveDefaultsToFile` and `loadSettings` |
-| `src/lunalib/backend/ui/components/base/LunaUITextField.kt` | universal non-printable-key filter, Delete bound to backspace handler, framerate-independent delete cooldown |
-| `src/lunalib/backend/scripts/CombatHandler.kt` | main-menu button labels switched to Orbitron, separate `versionUpdateText` DrawableString centered under "Version Checker" |
+1. **Remove** the original `LunaLib` folder from your mods directory (same modID — they conflict).
+2. **Drop** the `LunaLib-Search-2.0.5` folder into `Starsector/mods/`.
+3. Enable in the launcher.
 
-## Notes & non-goals
+---
 
-- Match semantics are whole-token prefix because Starsector's
-  `LabelAPI.setHighlight` only highlights whole whitespace-bounded tokens.
-  Mid-word substring highlighting (e.g. "Hotk" inside "Hotkey") was tried
-  and silently fails at the API level; the implementation expands matches
-  to the surrounding token instead.
-- The credits/about screens, debug UI, and the per-setting renderers
-  (color picker, keybind, radio, etc.) were not touched.
-- No new dependencies. `fuzzywuzzy` is still on the classpath; it is no
-  longer used by the search path but the import is preserved.
-- ModID stays `lunalib`. The forked folder ships with mod_info.json
-  renaming to "LunaLib (Search Fork)" purely so the launcher list shows
-  which one is enabled — that's a local cosmetic change, not a part of
-  the patch intended for upstream.
+## For modders — animated icons
 
-<!-- LunaLib Search Patch by ecnamor. -->
+In your mod's `LunaSettingsConfig.json`:
+
+```json
+{
+  "iconPath": "graphics/icons/my_mod.gif"
+}
+```
+
+Or keep the existing static path and place a `.gif` with the same base name alongside the `.png` — LunaLib will prefer the `.gif` automatically.
+
+Requirements: the `.gif` must be readable at runtime from the mod's own folder. Standard GIF87a and GIF89a are supported.
+
+---
+
+## License
+
+CC BY 4.0 — same as the original LunaLib. See [creativecommons.org/licenses/by/4.0/](https://creativecommons.org/licenses/by/4.0/).
+
+Original work: Lukas04.  
+Extended Search patch: ecnamor.  
+GIF animated icons: ecnamor.  
+GIF decoder (`GifDecoder.java`): Kevin Weiner / FM Software, Public Domain.
