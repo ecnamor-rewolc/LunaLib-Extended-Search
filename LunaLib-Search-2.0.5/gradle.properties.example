@@ -1,3 +1,8 @@
-# Copy this file to gradle.properties and set your Starsector install path.
-# gradle.properties is git-ignored so your local path never gets committed.
+# Copy this file to gradle.properties and set your paths.
+# gradle.properties is git-ignored so your local paths never get committed.
+
 starsectorDir=C:/Program Files (x86)/Fractal Softworks/Starsector
+
+# Full path to your LazyLib mod folder (the one containing jars/LazyLib.jar).
+# If omitted, defaults to $starsectorDir/mods/LazyLib
+#lazyLibDir=C:/Program Files (x86)/Fractal Softworks/Starsector/mods/LazyLib-3.0.0

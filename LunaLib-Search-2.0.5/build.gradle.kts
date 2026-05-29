@@ -6,8 +6,9 @@ repositories {
     mavenCentral()
 }
 
-val gameDir = findProperty("starsectorDir")?.toString() ?: "C:/Program Files (x86)/Fractal Softworks/Starsector"
-val modDir  = "${projectDir}"
+val gameDir   = findProperty("starsectorDir")?.toString() ?: "C:/Program Files (x86)/Fractal Softworks/Starsector"
+val lazyLibDir = findProperty("lazyLibDir")?.toString() ?: "$gameDir/mods/LazyLib"
+val modDir    = "${projectDir}"
 
 dependencies {
     // Starsector API — compile-only, provided at runtime by the game
@@ -19,7 +20,7 @@ dependencies {
         "$gameDir/starsector-core/lwjgl_util.jar",
         "$gameDir/starsector-core/log4j-1.2.9.jar",
         "$gameDir/starsector-core/json.jar",
-        "$gameDir/mods/LazyLib-3.0.0/jars/LazyLib.jar",
+        "$lazyLibDir/jars/LazyLib.jar",
         "$modDir/jars/libs/fuzzywuzzy-1.3.0.jar"
     ))
 }
