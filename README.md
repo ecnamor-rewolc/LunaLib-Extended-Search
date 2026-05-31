@@ -4,9 +4,10 @@
 > ### STATUS & DISCLAIMER — READ BEFORE INSTALLING
 >
 > - **NOT A FINAL RELEASE.** This is a working personal patch I'm publishing so other people can use it. There's no roadmap and no planned next version.
-> - **TESTED ONLY ON STARSECTOR `0.98a-RC8`.** It may work on older or newer versions, but I haven't verified.
+> - **TESTED ONLY ON STARSECTOR `0.98a-RC8`.** It may work on other versions, but I haven't verified.
 > - **SEARCH HAS OCCASIONAL MISSES.** Most queries do the right thing, but the filter or highlight sometimes drops a result I'd expect it to land on. Exact repro is unclear; nothing breaks the game when it happens — the search just returns fewer matches than it should.
 > - **ANYONE IS WELCOME TO FORK, MODIFY, OR REPUBLISH.** I am not maintaining it — please don't expect support, bug fixes, or future versions. The patch inherits [LunaLib](https://github.com/Lukas22041/LunaLib)'s [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license, which formally permits derivatives as long as you credit Lukas04 and note that the work was modified.
+> - ~~**GOD HAD NO HAND IN THE CREATION OF THIS ABHORRENCE**~~
 
 A fork of [LunaLib 2.0.5](https://github.com/Lukas22041/LunaLib) (Lukas04, CC BY 4.0) with two sets of additions:
 
@@ -85,7 +86,7 @@ In your mod's `LunaSettingsConfig.json`:
 }
 ```
 
-Or keep the existing static path and place a `.gif` with the same base name alongside the `.png` — LunaLib will prefer the `.gif` automatically.
+Or keep the existing static path and place a `.gif` with the same base name alongside the `.png` — LunaLib fork will prefer the `.gif` automatically.
 
 Requirements: the `.gif` must be readable at runtime from the mod's own folder. Standard GIF87a and GIF89a are supported.
 
